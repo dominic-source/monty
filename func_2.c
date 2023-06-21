@@ -39,12 +39,20 @@ int get_opcode(char **opcode, int *data, FILE *file)
 	char *lptr;
 	size_t n;
 	char *dat;
+	char *token;
 	ssize_t line;
 
 	lptr = NULL;
 	n = 0;
 	line = getline(&lptr, &n, file);
-	opcode = &(strtok(lptr, " "));
+	token = strtok(lptr, " ");
+	*opcode = malloc(sizeof(char) * (strlen(token) + 1));
+	if (opcode == NULL)
+	{
+		fprintf(stderr, "Error: malloc failed\n");
+		exit(EXIT_FAILURE);
+	}
+	opcode = &token;
 	dat = strtok(NULL, " ");
 	if (dat != NULL)
 		*data = atoi(dat);

@@ -2,13 +2,13 @@
 #define _monty_h_
 
 #include <string.h>
-#include <stdio.h>
 #include <stdlib.h>
 #include <stddef.h>
 #include <unistd.h>
 #include <stdarg.h>
 #include <fcntl.h>
-
+#include <stdio.h>
+extern ssize_t getline(char **, size_t *n, FILE *);
 /**
  * struct stack_s - doubly linked list representation of a stack (or queue)
  * @n: integer
@@ -38,7 +38,9 @@ typedef struct instruction_s
         char *opcode;
         void (*f)(stack_t **stack, unsigned int line_number);
 } instruction_t;
-
+char *rm_nwl(char *str);
+instruction_t instruction(unsigned int, unsigned int *count, FILE *file, ssize_t *);
+stack_t *head;
 size_t print_mstacklist(const stack_t *h);
 size_t mstack_len(const stack_t *h);
 stack_t *add_mstackint(stack_t **head, const int n);

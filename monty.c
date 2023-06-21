@@ -1,7 +1,5 @@
 #include "monty.h"
 
-void get_opcode(char **opcode, int* data, char **lptr, size_t *n);
-extern stack_t *head;
 
 /**
  * main - interprete monty
@@ -12,10 +10,10 @@ extern stack_t *head;
 int main(int argc, char* argv[])
 {
 	char *fname;
-	char *lineptr = NULL;//this is for your getline function
-	size_t n = 0; //this is for your getline function
 	int lnum = 0;
+	ssize_t line = 0;
 	FILE *file;
+	instruction_t interprete;
 	unsigned int count = 0;
 
 	head = NULL;
@@ -31,12 +29,13 @@ int main(int argc, char* argv[])
 		fprintf(stderr, "Error: Can't open file %s\n", fname);
 		exit(EXIT_FAILURE);
 	}
-	while (1)
+	while (line != -1)
 	{
 		lnum++;
-		interprete = instruction(lnum, &count, &lineptr, &n);
-		interprete.f();
-	}
+		interprete = instruction(lnum, &count, file, &line);
+		printf("1---%s---\n", interprete.opcode);
+/*		interprete.f();
+ */	}
 	fclose(file);
 	return (0);
 }
@@ -45,17 +44,28 @@ int main(int argc, char* argv[])
  * instruction - push an element to the stack
  * @opcode: opcode to interprete
  */
-instruction_t instruction(unsigned int lnum, unsigned int count, char **l, size_t *n)
+instruction_t instruction(unsigned int lnum, unsigned int *count, FILE *file, ssize_t *l)
 {
-	char *opcode = NULL;
+	char *lptr, *token;
 	int data = 0;
 	instruction_t instruct;
+        size_t n;
 
-	get_opcode(&opcode, &data, lineptr, n); //this where i moved your function to
-	instruct.opcode = opcode;
+	*l = getline(&lptr, &n, file);
+	if (*l == -1)
+		exit(EXIT_SUCCESS);
+        instruct.opcode = strtok(lptr, " ");
+        token = strtok(NULL, " ");
 
-	if (strcmp("push", instruct.opcode) == 0)
+	if (token != NULL)
+                data = atoi(token);
+	instruct.opcode = rm_nwl(instruct.opcode);
+
+	if (strcmp(instruct.opcode, "push") == 0)
+	{
 		add_mstackint(&head, data);
+		(*count)++;
+	}
 	else if (strcmp("pall", instruct.opcode) == 0)
 		print_mstacklist(head);/*
 	else if (strcmp("pint", opcode) == 0)
@@ -83,8 +93,43 @@ instruction_t instruction(unsigned int lnum, unsigned int count, char **l, size_
 	}*/
 	else
 	{
-		fprintf(stderr, "%i: unknown instruction %s", lnum, opcode);
+		fprintf(stderr, "%i: unknown instruction %s\n", lnum, instruct.opcode);
 		exit(EXIT_FAILURE);
 	}
 	return (instruct);
+}
+
+/**
+ * push - handle push
+ * @stack: the head
+ * @line_number: the line number
+ */
+void push(stack_t **stack, unsigned int line_number)
+{
+
+
+}
+
+/**
+ * rm_nwl - removes new line character in a string
+ * @str: input string
+ *
+ * Return: string without newline character
+ */
+char *rm_nwl(char *str)
+{
+        int i;
+
+        if (str == NULL)
+        {
+                return (NULL);
+        }
+        for (i = 0; str[i] != '\0'; i++)
+        {
+                if (str[i] == '\n')
+                {
+                        str[i] = '\0';
+                }
+        }
+        return (str);
 }
