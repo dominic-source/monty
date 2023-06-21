@@ -44,6 +44,6 @@ size_t mstack_len(const stack_t *h);
 stack_t *add_mstackint(stack_t **head, const int n);
 void free_stackint(stack_t *head);
 int delete_mstack_at_index(stack_t **head, unsigned int index);
-void get_opcode(char **opcode, int *data, FILE *file);
+int get_opcode(char **opcode, int *data, FILE *file);
 
 #endif
