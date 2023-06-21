@@ -36,16 +36,21 @@ stack_t *get_mstack_at_index(stack_t *head, unsigned int index)
 
 void get_opcode(char **opcode, int *data, FILE *file)
 {
-	char **lptr;
+	char *lptr;
 	size_t n;
 	char *dat;
+	ssize_t line;
 
-	*lptr = NULL;
+	lptr = NULL;
 	n = 0;
-	getline(lptr, &n, file);
-	opcode[0] = strtok(lptr, " ");
+	line = getline(&lptr, &n, file);
+	if (line == -1)
+		exit(EXIT_SUCCESS);
+	opcode = &(strtok(lptr, " "));
 	dat = strtok(NULL, " ");
-	*data = atoi(dat);
+	if (dat != NULL)
+		*data = atoi(dat);
+	free(lptr);
 
 	return;
 }
