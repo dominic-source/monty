@@ -58,7 +58,7 @@ stack_t *add_mstackint(stack_t **head, const int n)
 	}
         if (*head == NULL)
         {
-                new->n = n;
+		new->n = n;
                 new->next = NULL;
                 new->prev = NULL;
                 *head = new;
@@ -66,7 +66,7 @@ stack_t *add_mstackint(stack_t **head, const int n)
         }
         else
         {
-                new->n = n;
+		new->n = n;
                 (*head)->prev = new;
                 new->next = *head;
                 new->prev = NULL;
