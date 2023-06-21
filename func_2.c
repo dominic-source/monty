@@ -23,3 +23,29 @@ stack_t *get_mstack_at_index(stack_t *head, unsigned int index)
 	}
 	return (NULL);
 }
+
+/**
+ * get_opcode - retrieves opcode from monty file
+ *
+ * @opcode: pointer to opcode function
+ * @data: opcode value
+ * @FILE: file stream to read line from
+ *
+ * Return: 0 if successful and -1 if not
+ */
+
+void get_opcode(char **opcode, int *data, FILE *file)
+{
+	char **lptr;
+	size_t n;
+	char *dat;
+
+	*lptr = NULL;
+	n = 0;
+	getline(lptr, &n, file);
+	opcode[0] = strtok(lptr, " ");
+	dat = strtok(NULL, " ");
+	*data = atoi(dat);
+
+	return;
+}
