@@ -52,7 +52,10 @@ stack_t *add_mstackint(stack_t **head, const int n)
 
         new = malloc(sizeof(stack_t));
         if (new == NULL)
-                return (NULL);
+	{
+		fprintf(stderr, "Error: malloc failed\n");
+		exit(EXIT_FAILURE);
+	}
         if (*head == NULL)
         {
                 new->n = n;

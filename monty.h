@@ -1,9 +1,13 @@
 #ifndef _monty_h_
 #define _monty_h_
 
+#include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <stddef.h>
+#include <unistd.h>
+#include <stdarg.h>
+#include <fcntl.h>
 
 /**
  * struct stack_s - doubly linked list representation of a stack (or queue)
