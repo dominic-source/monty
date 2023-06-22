@@ -1,6 +1,7 @@
 #ifndef _monty_h_
 #define _monty_h_
 
+#include <ctype.h>
 #include <string.h>
 #include <stdlib.h>
 #include <stddef.h>
@@ -40,9 +41,9 @@ typedef struct instruction_s
 } instruction_t;
 void error(int, unsigned int, char *);
 char *rm_nwl(char *str);
-void find_func(char **lptr, instruction_t *instruct, int *data);
-void instruction(unsigned int, FILE *file, ssize_t *);
-stack_t *head;
+int find_func(char **lptr, instruction_t *instruct, int *data);
+int instruction(unsigned int, FILE *file, ssize_t *, char **, stack_t **);
+int ex;
 void print_mstacklist(stack_t **h, unsigned int l);
 void mstack_len(stack_t **h, unsigned int l);
 void add_mstackint(stack_t **head, unsigned int n);

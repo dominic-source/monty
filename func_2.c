@@ -41,10 +41,22 @@ void error(int n, unsigned int line, char *amsg)
 		fprintf(stderr, "Error: Can't open file %s\n", amsg);
 		break;
 	case 3:
-		fprintf(stderr, "%i: unknown instruction %s\n", line, amsg);
+		fprintf(stderr, "L%i: unknown instruction %s\n", line, amsg);
 		break;
 	case 4:
 		fprintf(stderr, "Error: malloc failed\n");
+		break;
+	case 5:
+		fprintf(stderr, "L%i: usage: push integer\n", line);
+		break;
+	case 6:
+		fprintf(stderr, "L%i: can't pint, stack empty\n", line);
+		break;
+	case 7:
+		fprintf(stderr, "L%i: can't pop an empty stack\n", line);
+		break;
+	case 8:
+		fprintf(stderr, "L%i: can't swap, stack too short", line);
 		break;
 	default:
 		return;
@@ -61,11 +73,11 @@ void error(int n, unsigned int line, char *amsg)
 void print_end_mstacklist(stack_t **h, unsigned int ln)
 {
 	stack_t *current;
-	
-	if (*h == NULL)
+
+	if (*h == NULL || ln == 0)
 	{
-		fprintf(stderr, "L%i: can't pint, stack empty\n", ln);
-		exit(EXIT_FAILURE);
+		ex = 6;
+		return;
 	}
 	current = *h;
 	printf("%d\n", current->n);
@@ -82,10 +94,10 @@ void pop_end_mstacklist(stack_t **h, unsigned int ln)
 {
 	stack_t *current;
 
-	if (*h == NULL || h == NULL)
+	if (*h == NULL || h == NULL || ln == 0)
 	{
-		fprintf(stderr, "L%i: can't pop an empty stack\n", ln);
-		exit(EXIT_FAILURE);
+		ex = 7;
+		return;
 	}
 	current = *h;
 	*h = (*h)->next;
@@ -105,10 +117,10 @@ void swap_mstacklist(stack_t **h, unsigned int ln)
 {
 	stack_t *current;
 
-	if (*h == NULL || (*h)->next == NULL)
+	if (*h == NULL || (*h)->next == NULL || ln == 0)
 	{
-		fprintf(stderr, "L%i: can't swap, stack too short", ln);
-		exit(EXIT_FAILURE);
+		ex = 8;
+		return;
 	}
 	current = (*h)->next;
 	(*h)->next = current->next;
