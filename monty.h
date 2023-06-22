@@ -53,4 +53,7 @@ stack_t *get_mstack_at_index(stack_t *head, unsigned int index);
 void print_end_mstacklist(stack_t **h, unsigned int ln);
 void pop_end_mstacklist(stack_t **h, unsigned int ln);
 void swap_mstacklist(stack_t **h, unsigned int ln);
+void add_mstacklist(stack_t **h, unsigned int ln);
+void nop_mstacklist(stack_t **h, unsigned int ln);
+
 #endif
