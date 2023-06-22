@@ -93,3 +93,29 @@ void pop_end_mstacklist(stack_t **h, unsigned int ln)
 		(*h)->prev = NULL;
 	free(current);
 }
+
+/**
+ * swap_mstacklist - swaps last two elements of the stack
+ *
+ * @h: the head pointer
+ * @ln: line number
+ */
+
+void swap_mstacklist(stack_t **h, unsigned int ln)
+{
+	stack_t *current;
+
+	if (*h == NULL || (*h)->next == NULL)
+	{
+		fprintf(stderr, "L%i: can't swap, stack too short", ln);
+		exit(EXIT_FAILURE);
+	}
+	current = (*h)->next;
+	(*h)->next = current->next;
+	if (current->next != NULL)
+		(current->next)->prev = *h;
+	current->next = *h;
+	(*h)->prev = current;
+	current->prev = NULL;
+	*h = current;
+}

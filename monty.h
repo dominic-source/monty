@@ -51,5 +51,5 @@ void delete_mstack_at_index(stack_t **head, unsigned int index);
 stack_t *get_mstack_at_index(stack_t *head, unsigned int index);
 void print_end_mstacklist(stack_t **h, unsigned int ln);
 void pop_end_mstacklist(stack_t **h, unsigned int ln);
-
+void swap_mstacklist(stack_t **h, unsigned int ln);
 #endif
