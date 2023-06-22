@@ -67,7 +67,7 @@ void div_mstacklist(stack_t **h, unsigned int ln)
 {
 	int div;
 	
-	if (*h == NULL || (*h)->next == NULL)
+	if (*h == NULL || ((*h)->next == NULL)
 		ex = 11;
 	if ((*h)->n == 0)
 		ex = 12;
