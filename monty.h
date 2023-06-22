@@ -38,14 +38,15 @@ typedef struct instruction_s
         char *opcode;
         void (*f)(stack_t **stack, unsigned int line_number);
 } instruction_t;
+void error(int, unsigned int, char *);
 char *rm_nwl(char *str);
-instruction_t instruction(unsigned int, unsigned int *count, FILE *file, ssize_t *);
+void find_func(char **lptr, instruction_t *instruct, int *data);
+void instruction(unsigned int, FILE *file, ssize_t *);
 stack_t *head;
-size_t print_mstacklist(const stack_t *h);
-size_t mstack_len(const stack_t *h);
-stack_t *add_mstackint(stack_t **head, const int n);
-void free_stackint(stack_t *head);
-int delete_mstack_at_index(stack_t **head, unsigned int index);
-int get_opcode(char **opcode, int *data, FILE *file);
-
+void print_mstacklist(stack_t **h, unsigned int l);
+void mstack_len(stack_t **h, unsigned int l);
+void add_mstackint(stack_t **head, unsigned int n);
+void free_stackint(stack_t **head, unsigned int n);
+void delete_mstack_at_index(stack_t **head, unsigned int index);
+stack_t *get_mstack_at_index(stack_t *head, unsigned int index);
 #endif

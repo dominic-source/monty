@@ -25,38 +25,28 @@ stack_t *get_mstack_at_index(stack_t *head, unsigned int index)
 }
 
 /**
- * get_opcode - retrieves opcode from monty file
- *
- * @opcode: pointer to opcode function
- * @data: opcode value
- * @FILE: file stream to read line from
- *
- * Return: 0 if successful and -1 if not
+ * error - print appropriate error
+ * @n: error number
+ * @line: line number
+ * @amsg: additional message
  */
-
-int get_opcode(char **opcode, int *data, FILE *file)
+void error(int n, unsigned int line, char *amsg)
 {
-	char *lptr;
-	size_t n;
-	char *dat;
-	char *token;
-	ssize_t line;
-
-	lptr = NULL;
-	n = 0;
-	line = getline(&lptr, &n, file);
-	token = strtok(lptr, " ");
-	*opcode = malloc(sizeof(char) * (strlen(token) + 1));
-	if (opcode == NULL)
+	switch (n)
 	{
+	case 1:
+		fprintf(stderr, "USAGE: monty file\n");
+		break;
+	case 2:
+		fprintf(stderr, "Error: Can't open file %s\n", amsg);
+		break;
+	case 3:
+		fprintf(stderr, "%i: unknown instruction %s\n", line, amsg);
+		break;
+	case 4:
 		fprintf(stderr, "Error: malloc failed\n");
-		exit(EXIT_FAILURE);
+		break;
+	default:
+		return;
 	}
-	opcode = &token;
-	dat = strtok(NULL, " ");
-	if (dat != NULL)
-		*data = atoi(dat);
-	free(lptr);
-
-	return (line);
 }

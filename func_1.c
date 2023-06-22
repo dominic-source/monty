@@ -3,92 +3,89 @@
 /**
  * print_mstacklist - print out the doubly link list
  * @h: the head
- * Return: the count of the list
+ * @ln: line number
  */
-size_t print_mstacklist(const stack_t *h)
+void print_mstacklist(stack_t **h, unsigned int ln)
 {
-        const stack_t *current;
-        size_t i, count = 0;
+        stack_t *current;
+        unsigned int i;
 
-        current = h;
+        current = *h;
         for (i = 0; current != NULL; i++)
         {
-                count++;
                 printf("%i\n", current->n);
                 current = current->next;
         }
-
-        return (count);
+	if (i > ln)
+		return;
 }
 
 /**
  * mstack_len - length of the stack
  * @h: head
- * Return: length
+ * @ln: line number
  */
-size_t mstack_len(const stack_t *h)
+void mstack_len(stack_t **h, unsigned int ln)
 {
-        const stack_t *current;
-        size_t i, count = 0;
+        stack_t *current;
+        unsigned int i;
+	int count = 0;
 
-        current = h;
-        for (i = 0; current != NULL; i++)
+        current = *h;
+        for (i = 0; i < ln && current != NULL; i++)
         {
                 count++;
                 current = current->next;
         }
-        return (count);
+	printf("%i\n", count);
 }
 
 /**
  * add_mstackint - add node at the beginning
  * @head: head of the linked list
- * @n: the data to add in the created node
- * Return: the new node
+ * @ln: line number
+ *
  */
-stack_t *add_mstackint(stack_t **head, const int n)
+void add_mstackint(stack_t **head, unsigned int n)
 {
         stack_t *new;
 
         new = malloc(sizeof(stack_t));
-        if (new == NULL)
+        if (new == NULL && n)
 	{
-		fprintf(stderr, "Error: malloc failed\n");
+		error(4, n, NULL);
 		exit(EXIT_FAILURE);
 	}
         if (*head == NULL)
         {
-		new->n = n;
                 new->next = NULL;
                 new->prev = NULL;
                 *head = new;
-
         }
         else
         {
-		new->n = n;
                 (*head)->prev = new;
                 new->next = *head;
                 new->prev = NULL;
                 *head = new;
         }
 
-        return (new);
 }
 
 /**
  * free_stackint - free linked list
  * @head: the head of the list
+ * @ln: line number
  */
-void free_stackint(stack_t *head)
+void free_stackint(stack_t **head, unsigned int ln)
 {
-        stack_t *current = head;
-        int i;
+        stack_t *current = *head;
+        unsigned int i;
 
-        for (i = 0; head != NULL; i++)
+        for (i = 0; i < ln && *head != NULL; i++)
         {
-                current = head;
-                head = head->next;
+                current = *head;
+                *head = (*head)->next;
                 free(current);
         }
 }
@@ -97,20 +94,18 @@ void free_stackint(stack_t *head)
  * delete_mstack_at_index - delete node at index
  * @head: the head
  * @index: index of node to delete
- * Return: 1 or -1
  */
-int delete_mstack_at_index(stack_t **head, unsigned int index)
+void delete_mstack_at_index(stack_t **head, unsigned int index)
 {
         stack_t *current = *head, *del;
         unsigned int i;
 
         if (current == NULL || head == NULL)
-                return (-1);
+                return;
         else if (index == 0 && current->next == NULL)
         {
                 free(current);
                 *head = NULL;
-                return (1);
         }
         else if (index == 0 && current != NULL)
         {
@@ -118,20 +113,17 @@ int delete_mstack_at_index(stack_t **head, unsigned int index)
                 current->next->prev = NULL;
                 *head = current->next;
                 free(del);
-                return (1);
         }
         else if (index > 0)
         {
                 for (i = 0; i < (index - 1) && current != NULL; i++)
                         current = current->next;
                 if (current == NULL && index > i)
-                        return (-1);
+                        return;
                 del = current->next;
                 current->next = current->next->next != NULL ? current->next->next : NULL;
                 if (current->next != NULL)
                         current->next->prev = current;
                 free(del);
-                return (1);
         }
-        return (-1);
 }

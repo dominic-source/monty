@@ -10,33 +10,30 @@
 int main(int argc, char* argv[])
 {
 	char *fname;
-	int lnum = 0;
+	unsigned int lnum = 0;
 	ssize_t line = 0;
 	FILE *file;
-	instruction_t interprete;
-	unsigned int count = 0;
 
 	head = NULL;
 	if (argc != 2)
 	{
-		fprintf(stderr, "USAGE: monty file\n");
+		error(1, lnum, NULL);
 		exit(EXIT_FAILURE);
 	}
 	fname = argv[1];
 	file  = fopen(fname, "r");
 	if (file == NULL)
 	{
-		fprintf(stderr, "Error: Can't open file %s\n", fname);
+		error(2, lnum, fname);
 		exit(EXIT_FAILURE);
 	}
 	while (line != -1)
 	{
 		lnum++;
-		interprete = instruction(lnum, &count, file, &line);
-		printf("1---%s---\n", interprete.opcode);
-/*		interprete.f();
- */	}
+		instruction(lnum, file, &line);
+	}
 	fclose(file);
+	free_stackint(&head, lnum);
 	return (0);
 }
 
@@ -44,69 +41,69 @@ int main(int argc, char* argv[])
  * instruction - push an element to the stack
  * @opcode: opcode to interprete
  */
-instruction_t instruction(unsigned int lnum, unsigned int *count, FILE *file, ssize_t *l)
+void instruction(unsigned int lnum, FILE *file, ssize_t *l)
 {
-	char *lptr, *token;
-	int data = 0;
+	char *lptr;
+	stack_t *current;
 	instruction_t instruct;
         size_t n;
+	int data = 0;
 
 	*l = getline(&lptr, &n, file);
 	if (*l == -1)
 		exit(EXIT_SUCCESS);
-        instruct.opcode = strtok(lptr, " ");
-        token = strtok(NULL, " ");
-
-	if (token != NULL)
-                data = atoi(token);
-	instruct.opcode = rm_nwl(instruct.opcode);
-
-	if (strcmp(instruct.opcode, "push") == 0)
+	find_func(&lptr, &instruct, &data);
+	if (instruct.opcode != NULL && strcmp(instruct.opcode, "") != 0)
 	{
-		add_mstackint(&head, data);
-		(*count)++;
+		if (instruct.f == NULL)
+		{
+			error(3, lnum, instruct.opcode);
+			exit(EXIT_FAILURE);
+		}
+		instruct.f(&head, lnum);
+
+		if (strcmp(instruct.opcode, "push") == 0)
+		{
+			current = head;
+			current->n = data;
+		}
 	}
-	else if (strcmp("pall", instruct.opcode) == 0)
-		print_mstacklist(head);/*
-	else if (strcmp("pint", opcode) == 0)
-	{
-
-
-	}
-	else if (strcmp("pop", opcode) == 0)
-	{
-
-	}
-	else if (strcmp("swap", opcode) == 0)
-	{
-
-
-	}
-	else if (strcmp("add", opcode) == 0)
-	{
-
-
-	}
-	else if (strcmp("nop", opcode) == 0)
-	{
-
-	}*/
-	else
-	{
-		fprintf(stderr, "%i: unknown instruction %s\n", lnum, instruct.opcode);
-		exit(EXIT_FAILURE);
-	}
-	return (instruct);
 }
 
 /**
- * push - handle push
+ * find_func - handle push
  * @stack: the head
  * @line_number: the line number
  */
-void push(stack_t **stack, unsigned int line_number)
+void find_func(char **lptr, instruction_t *instruct, int *data)
 {
+	char *token;
+	int flag = 0, i;
 
+	instruction_t arr[] = {
+		{"push", add_mstackint},
+		{"pall", print_mstacklist},
+		{NULL, NULL},
+	};
+
+	instruct->opcode = strtok(*lptr, " ");
+        token = strtok(NULL, " ");
+
+	if (token != NULL)
+                *data = atoi(token);
+	instruct->opcode = rm_nwl(instruct->opcode);
+
+	for (i = 0; arr[i].opcode != NULL; i++)
+	{
+		if (strcmp(arr[i].opcode, instruct->opcode) == 0)
+		{
+			flag = 1;
+			instruct->f = arr[i].f;
+			break;
+		}
+	}
+	if (!flag)
+		instruct->f = NULL;
 
 }
 
