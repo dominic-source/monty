@@ -68,5 +68,5 @@ void print_end_mstacklist(stack_t **h, unsigned int ln)
 		exit(EXIT_FAILURE);
 	}
 	current = *h;
-	printf("%i\n", current->n);
+	printf("%d\n", current->n);
 }
