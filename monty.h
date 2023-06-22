@@ -49,4 +49,6 @@ void add_mstackint(stack_t **head, unsigned int n);
 void free_stackint(stack_t **head, unsigned int n);
 void delete_mstack_at_index(stack_t **head, unsigned int index);
 stack_t *get_mstack_at_index(stack_t *head, unsigned int index);
+void print_end_mstacklist(stack_t **h, unsigned int ln);
+
 #endif

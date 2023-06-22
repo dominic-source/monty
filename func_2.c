@@ -50,3 +50,21 @@ void error(int n, unsigned int line, char *amsg)
 		return;
 	}
 }
+
+/**
+ * print_end_mstacklist - prints value at top of the stack
+ *
+ * @h: the head ponter
+ * @ln: line number
+ */
+
+void print_end_mstacklist(stack_t **h, unsigned int ln)
+{
+	stack_t *current;
+	unsigned int i;
+	
+	i = ln;
+	current = *h;
+	printf("%i\n", current->n);
+	i++;
+}

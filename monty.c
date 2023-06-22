@@ -83,6 +83,7 @@ void find_func(char **lptr, instruction_t *instruct, int *data)
 	instruction_t arr[] = {
 		{"push", add_mstackint},
 		{"pall", print_mstacklist},
+		{"pint", print_end_mstacklist},
 		{NULL, NULL},
 	};
 
