@@ -61,10 +61,12 @@ void error(int n, unsigned int line, char *amsg)
 void print_end_mstacklist(stack_t **h, unsigned int ln)
 {
 	stack_t *current;
-	unsigned int i;
 	
-	i = ln;
+	if (*h == NULL)
+	{
+		fprintf(stderr, "L%i: can't pint, stack empty\n", ln);
+		exit(EXIT_FAILURE);
+	}
 	current = *h;
 	printf("%i\n", current->n);
-	i++;
 }
