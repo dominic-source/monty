@@ -84,6 +84,7 @@ void find_func(char **lptr, instruction_t *instruct, int *data)
 		{"push", add_mstackint},
 		{"pall", print_mstacklist},
 		{"pint", print_end_mstacklist},
+		{"pop", pop_end_mstacklist},
 		{NULL, NULL},
 	};
 

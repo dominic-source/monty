@@ -70,3 +70,26 @@ void print_end_mstacklist(stack_t **h, unsigned int ln)
 	current = *h;
 	printf("%d\n", current->n);
 }
+
+/**
+ * pop_end_mstacklist - removes the top element of the stack
+ *
+ * @h: the head pointer
+ * @ln: line number
+ */
+
+void pop_end_mstacklist(stack_t **h, unsigned int ln)
+{
+	stack_t *current;
+
+	if (*h == NULL)
+	{
+		fprintf(stderr, "L%i: can't pop an empty stack\n", ln);
+		exit(EXIT_FAILURE);
+	}
+	current = *h;
+	*h = (*h)->next;
+	if (*h != NULL)
+		(*h)->prev = NULL;
+	free(current);
+}
