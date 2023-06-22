@@ -1,30 +1,6 @@
 #include "monty.h"
 
 /**
- * get_mstack_at_index - get the nth node of a linked list
- *
- * @head: pointer head of the list
- * @index: position
- *
- * Return: return the node or NULL if it not exist
- */
-stack_t *get_mstack_at_index(stack_t *head, unsigned int index)
-{
-	stack_t *temp;
-	unsigned int num_nodes = 0;
-
-	temp = head;
-	while (temp != NULL && num_nodes <= index)
-	{
-		if (num_nodes == index)
-			return (temp);
-		temp = temp->next;
-		num_nodes++;
-	}
-	return (NULL);
-}
-
-/**
  * error - print appropriate error
  * @n: error number
  * @line: line number
@@ -56,7 +32,10 @@ void error(int n, unsigned int line, char *amsg)
 		fprintf(stderr, "L%i: can't pop an empty stack\n", line);
 		break;
 	case 8:
-		fprintf(stderr, "L%i: can't swap, stack too short", line);
+		fprintf(stderr, "L%i: can't %s, stack too short\n", line, amsg);
+		break;
+	case 9:
+		fprintf(stderr, "L%i: division by zero\n", line);
 		break;
 	default:
 		return;
@@ -130,4 +109,32 @@ void swap_mstacklist(stack_t **h, unsigned int ln)
 	(*h)->prev = current;
 	current->prev = NULL;
 	*h = current;
+}
+
+/**
+ * mod_mstacklist - modulus of second top element by top
+ *
+ * @h: the head pointer
+ * @ln: line number
+ */
+
+void mod_mstacklist(stack_t **h, unsigned int ln)
+{
+	int mod;
+
+	if (*h == NULL || (*h)->next == NULL)
+	{
+		ex = 8;
+		return;
+	}
+	if ((*h)->n == 0 || ln == 0)
+	{
+		ex = 9;
+		return;
+	}
+	*h = (*h)->next;
+	mod = (*h)->n % ((*h)->prev)->n;
+	(*h)->n = mod;
+	free((*h)->prev);
+	(*h)->prev = NULL;
 }

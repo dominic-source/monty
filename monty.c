@@ -7,7 +7,7 @@
  * @argc: argument counts
  * Return: 0 or 1
  */
-int main(int argc, char* argv[])
+int main(int argc, char *argv[])
 {
 	char *fname, *opcode = NULL;
 	unsigned int lnum = 0;
@@ -50,34 +50,33 @@ int main(int argc, char* argv[])
 
 /**
  * instruction - push an element to the stack
- * @lnum: line number
- * @file: file
+ * @ln: line number
+ * @fl: file
  * @l: getline rturn value
- * @opcode: opcode to interprete
+ * @opc: opcode to interprete
  * @h: head of nodes
- *
+ * Return: 0 or  error number
  */
-int instruction(unsigned int lnum, FILE *file, ssize_t *l, char **opcode, stack_t **h)
+int instruction(unsigned int ln, FILE *fl, ssize_t *l, char **opc, stack_t **h)
 {
 	char *lptr;
 	stack_t *current;
 	instruction_t instruct;
-        size_t n;
+	size_t n;
 	int data = 0;
 
-	*l = getline(&lptr, &n, file);
+	*l = getline(&lptr, &n, fl);
 	if (*l == -1)
 		exit(EXIT_SUCCESS);
 	ex = find_func(&lptr, &instruct, &data);
-	*opcode = instruct.opcode;
+	*opc = instruct.opcode;
 	if (ex != 0)
 		return (ex);
 	if (instruct.opcode != NULL && strcmp(instruct.opcode, "") != 0)
 	{
 		if (instruct.f == NULL)
 			return (3);
-		instruct.f(h, lnum);
-
+		instruct.f(h, ln);
 		if (strcmp(instruct.opcode, "push") == 0)
 		{
 			current = *h;
@@ -100,17 +99,16 @@ int find_func(char **lptr, instruction_t *instruct, int *data)
 	int flag = 0, i;
 
 	instruction_t arr[] = {
-		{"push", add_mstackint},
-		{"pall", print_mstacklist},
-		{"pint", print_end_mstacklist},
-		{"pop", pop_end_mstacklist},
-		{"swap", swap_mstacklist},
+		{"push", add_mstackint}, {"pall", print_mstacklist},
+		{"pint", print_end_mstacklist}, {"pop", pop_end_mstacklist},
+		{"swap", swap_mstacklist}, {"add", add_mstacklist},
+		{"nop", nop_mstacklist}, {"sub", sub_mstacklist},
+		{"div", div_mstacklist}, {"mul", mul_mstacklist},
+		{"mod", mod_mstacklist},
 		{NULL, NULL},
 	};
-
 	instruct->opcode = strtok(*lptr, " ");
-        token = strtok(NULL, " ");
-
+	token = strtok(NULL, " ");
 	if (token != NULL && strcmp(instruct->opcode, "push") == 0)
 	{
 		for (i = 0; token[i] != '\0' && token[i] != '\n'; i++)
@@ -126,7 +124,6 @@ int find_func(char **lptr, instruction_t *instruct, int *data)
 	else if (token == NULL && strcmp(instruct->opcode, "push") == 0)
 		return (5);
 	instruct->opcode = rm_nwl(instruct->opcode);
-
 	for (i = 0; arr[i].opcode != NULL; i++)
 		if (strcmp(arr[i].opcode, instruct->opcode) == 0)
 		{
@@ -147,18 +144,18 @@ int find_func(char **lptr, instruction_t *instruct, int *data)
  */
 char *rm_nwl(char *str)
 {
-        int i;
+	int i;
 
-        if (str == NULL)
-        {
-                return (NULL);
-        }
-        for (i = 0; str[i] != '\0'; i++)
-        {
-                if (str[i] == '\n')
-                {
-                        str[i] = '\0';
-                }
-        }
-        return (str);
+	if (str == NULL)
+	{
+		return (NULL);
+	}
+	for (i = 0; str[i] != '\0'; i++)
+	{
+		if (str[i] == '\n')
+		{
+			str[i] = '\0';
+		}
+	}
+	return (str);
 }
