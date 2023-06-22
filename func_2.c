@@ -82,7 +82,7 @@ void pop_end_mstacklist(stack_t **h, unsigned int ln)
 {
 	stack_t *current;
 
-	if (*h == NULL)
+	if (*h == NULL || h == NULL)
 	{
 		fprintf(stderr, "L%i: can't pop an empty stack\n", ln);
 		exit(EXIT_FAILURE);
