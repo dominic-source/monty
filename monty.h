@@ -54,5 +54,8 @@ void pop_end_mstacklist(stack_t **h, unsigned int ln);
 void swap_mstacklist(stack_t **h, unsigned int ln);
 void add_mstacklist(stack_t **h, unsigned int ln);
 void nop_mstacklist(stack_t **h, unsigned int ln);
+void sub_mstacklist(stack_t **h, unsigned int ln);
+void mul_mstacklist(stack_t **h, unsigned int ln);
+void mod_mstacklist(stack_t **h, unsigned int ln);
 
 #endif
