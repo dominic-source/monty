@@ -28,7 +28,6 @@ int main(int argc, char *argv[])
 	{
 		error(2, lnum, fname);
 		free_stackint(&head);
-		fclose(file);
 		exit(EXIT_FAILURE);
 	}
 	while (line != -1)
