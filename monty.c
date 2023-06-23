@@ -39,10 +39,14 @@ int main(int argc, char *argv[])
 			error(ex, lnum, opcode);
 			if (head != NULL)
 				free_stackint(&head, lnum);
+			free(opcode);
 			exit(EXIT_FAILURE);
 		}
+		free(opcode);
+		opcode = NULL;
 	}
 	fclose(file);
+	free(opcode);
 	free_stackint(&head, lnum);
 	return (0);
 }
@@ -71,7 +75,10 @@ int instruction(unsigned int ln, FILE *fl, ssize_t *l, char **opc, stack_t **h)
 		return (0);
 	}
 	ex = find_func(&lptr, &instruct, &data);
-	*opc = instruct.opcode;
+	*opc = malloc(sizeof(char) * (strlen(instruct.opcode) + 1));
+	if (*opc == NULL)
+		return (4);
+	strcpy(*opc, instruct.opcode);
 	if (ex != 0)
 	{
 		free(lptr);
