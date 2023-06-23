@@ -51,14 +51,13 @@ void add_mstackint(stack_t **head, unsigned int n)
 /**
  * free_stackint - free linked list
  * @head: the head of the list
- * @ln: line number
  */
-void free_stackint(stack_t **head, unsigned int ln)
+void free_stackint(stack_t **head)
 {
 	stack_t *current = *head;
 	unsigned int i;
 
-	for (i = 0; i < ln && *head != NULL; i++)
+	for (i = 0; *head != NULL; i++)
 	{
 		current = *head;
 		*head = (*head)->next;

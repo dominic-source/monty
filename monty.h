@@ -46,7 +46,7 @@ int instruction(unsigned int, FILE *file, ssize_t *, char **, stack_t **);
 int ex;
 void print_mstacklist(stack_t **h, unsigned int l);
 void add_mstackint(stack_t **head, unsigned int n);
-void free_stackint(stack_t **head, unsigned int n);
+void free_stackint(stack_t **head);
 void print_end_mstacklist(stack_t **h, unsigned int ln);
 void pop_end_mstacklist(stack_t **h, unsigned int ln);
 void swap_mstacklist(stack_t **h, unsigned int ln);
