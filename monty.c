@@ -43,8 +43,7 @@ int main(int argc, char *argv[])
 		}
 	}
 	fclose(file);
-	if (head != NULL)
-		free_stackint(&head, lnum);
+	free_stackint(&head, lnum);
 	return (0);
 }
 
@@ -59,23 +58,32 @@ int main(int argc, char *argv[])
  */
 int instruction(unsigned int ln, FILE *fl, ssize_t *l, char **opc, stack_t **h)
 {
-	char *lptr;
+	char *lptr = NULL;
 	stack_t *current;
 	instruction_t instruct;
-	size_t n;
+	size_t n = 0;
 	int data = 0;
 
 	*l = getline(&lptr, &n, fl);
 	if (*l == -1)
-		exit(EXIT_SUCCESS);
+	{
+		free(lptr);
+		return (0);
+	}
 	ex = find_func(&lptr, &instruct, &data);
 	*opc = instruct.opcode;
 	if (ex != 0)
+	{
+		free(lptr);
 		return (ex);
+	}
 	if (instruct.opcode != NULL && strcmp(instruct.opcode, "") != 0)
 	{
 		if (instruct.f == NULL)
+		{
+			free(lptr);
 			return (3);
+		}
 		instruct.f(h, ln);
 		if (strcmp(instruct.opcode, "push") == 0)
 		{
@@ -83,6 +91,7 @@ int instruction(unsigned int ln, FILE *fl, ssize_t *l, char **opc, stack_t **h)
 			current->n = data;
 		}
 	}
+	free(lptr);
 	return (ex);
 }
 
@@ -95,7 +104,7 @@ int instruction(unsigned int ln, FILE *fl, ssize_t *l, char **opc, stack_t **h)
  */
 int find_func(char **lptr, instruction_t *instruct, int *data)
 {
-	char *token;
+	char *token = NULL;
 	int flag = 0, i;
 
 	instruction_t arr[] = {
