@@ -34,7 +34,7 @@ int main(int argc, char *argv[])
 	{
 		lnum++;
 		ex = instruction(lnum, file, &line, &opcode, &head);
-		if (ex != 0)
+		if (ex != 0 && ex != -1)
 		{
 			error(ex, lnum, opcode);
 			free(opcode);
@@ -66,6 +66,8 @@ int instruction(unsigned int ln, FILE *fl, ssize_t *l, char **opc, stack_t **h)
 	size_t n = 0;
 	int data = 0;
 
+	instruct.opcode = NULL;
+	instruct.f = NULL;
 	*l = getline(&lptr, &n, fl);
 	if (*l == -1)
 	{
@@ -73,6 +75,11 @@ int instruction(unsigned int ln, FILE *fl, ssize_t *l, char **opc, stack_t **h)
 		return (0);
 	}
 	ex = find_func(&lptr, &instruct, &data);
+	if (ex != 0)
+	{
+		free(lptr);
+		return (ex);
+	}
 	*opc = malloc(sizeof(char) * (strlen(instruct.opcode) + 1));
 	if (*opc == NULL)
 	{
@@ -80,11 +87,7 @@ int instruction(unsigned int ln, FILE *fl, ssize_t *l, char **opc, stack_t **h)
 		return (4);
 	}
 	strcpy(*opc, instruct.opcode);
-	if (ex != 0)
-	{
-		free(lptr);
-		return (ex);
-	}
+
 	if (instruct.opcode != NULL && strcmp(instruct.opcode, "") != 0)
 	{
 		if (instruct.f == NULL)
@@ -100,15 +103,6 @@ int instruction(unsigned int ln, FILE *fl, ssize_t *l, char **opc, stack_t **h)
 	return (ex);
 }
 
-#define MC\
-	do {\
-	if (token != NULL)\
-	{\
-		token = rm_nwl(token);\
-		token = strtok(token, " ");\
-	} \
-} \
-while (0)
 /**
  * find_func - handle push
  * @lptr: command
@@ -127,13 +121,13 @@ int find_func(char **lptr, instruction_t *instruct, int *data)
 		{"swap", swap_mstacklist}, {"add", add_mstacklist},
 		{"nop", nop_mstacklist}, {"sub", sub_mstacklist},
 		{"div", div_mstacklist}, {"mul", mul_mstacklist},
-		{"mod", mod_mstacklist},
-		{NULL, NULL},
+		{"mod", mod_mstacklist}, {NULL, NULL},
 	};
+	*lptr = rm_nwl(*lptr);
 	instruct->opcode = strtok(*lptr, " ");
+	if (instruct->opcode == NULL)
+		return (-1);
 	token = strtok(NULL, " ");
-	instruct->opcode = rm_nwl(instruct->opcode);
-	MC;
 	if (token != NULL && strcmp(instruct->opcode, "push") == 0)
 	{
 		for (i = 0; token[i] != '\0' && token[i] != '\n'; i++)
@@ -178,7 +172,7 @@ char *rm_nwl(char *str)
 	{
 		if (str[i] == '\n')
 		{
-			str[i] = ' ';
+			str[i] = '\0';
 
 		}
 	}
