@@ -1,4 +1,4 @@
-#include <monty.h>
+#include "monty.h"
 
 /**
  * add_mstacklist - adds the top two elements
@@ -11,10 +11,10 @@ void add_mstacklist(stack_t **h, unsigned int ln)
 {
 	int sum;
 
-	if (*h == NULL || (*h)->next == NULL)
+	if (*h == NULL || (*h)->next == NULL || ln == 0)
 	{
-		fprintf(stderr, "L%i: can't add, stack too short", ln);
-		exit(EXIT_FAILURE);
+		ex = 8;
+		return;
 	}
 	*h = (*h)->next;
 	sum = (*h)->n + ((*h)->prev)->n;
@@ -32,8 +32,8 @@ void add_mstacklist(stack_t **h, unsigned int ln)
 
 void nop_mstacklist(stack_t **h, unsigned int ln)
 {
-	void(*h);
-	void(ln);
+	*h = *h;
+	ln = ln;
 }
 
 /**
@@ -47,13 +47,16 @@ void sub_mstacklist(stack_t **h, unsigned int ln)
 {
 	int sum;
 
-        if (*h == NULL || (*h)->next == NULL)
-		ex = 10;
-        *h = (*h)->next;
-        sum = (*h)->n - ((*h)->prev)->n;
-        (*h)->n = sum;
-        free((*h)->prev);
-        (*h)->prev = NULL;
+	if (*h == NULL || (*h)->next == NULL || ln == 0)
+	{
+		ex = 8;
+		return;
+	}
+	*h = (*h)->next;
+	sum = (*h)->n - ((*h)->prev)->n;
+	(*h)->n = sum;
+	free((*h)->prev);
+	(*h)->prev = NULL;
 }
 
 /**
@@ -66,11 +69,17 @@ void sub_mstacklist(stack_t **h, unsigned int ln)
 void div_mstacklist(stack_t **h, unsigned int ln)
 {
 	int div;
-	
-	if (*h == NULL ||(*h)->next == NULL)
-		ex = 11;
-	if ((*h)->n == 0)
-		ex = 12;
+
+	if (*h == NULL || (*h)->next == NULL)
+	{
+		ex = 8;
+		return;
+	}
+	if ((*h)->n == 0 || ln == 0)
+	{
+		ex = 9;
+		return;
+	}
 	*h = (*h)->next;
 	div = (*h)->n / ((*h)->prev)->n;
 	(*h)->n = div;
@@ -88,34 +97,15 @@ void div_mstacklist(stack_t **h, unsigned int ln)
 void mul_mstacklist(stack_t **h, unsigned int ln)
 {
 	int mul;
-	
-	if (*h == NULL || (*h)->next == NULL)
-		ex = 13;
+
+	if (*h == NULL || (*h)->next == NULL || ln == 0)
+	{
+		ex = 8;
+		return;
+	}
 	*h = (*h)->next;
 	mul = (*h)->n * ((*h)->prev)->n;
 	(*h)->n = mul;
-	free((*h)->prev);
-	(*h)->prev = NULL;
-}
-
-/**
- * mod_mstacklist - modulus of second top element by top
- *
- * @h: the head pointer
- * @ln: line number
- */
-
-void mod_mstacklist(stack_t **h, unsigned int ln)
-{
-	int mod;
-	
-	if (*h == NULL || (*h)->next == NULL)
-		ex = 14;
-	if ((*h)->n == 0)
-		ex = 15;
-	*h = (*h)->next;
-        mod = (*h)->n % ((*h)->prev)->n;
-	(*h)->n = mod;
 	free((*h)->prev);
 	(*h)->prev = NULL;
 }

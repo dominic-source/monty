@@ -1,6 +1,7 @@
 #ifndef _monty_h_
 #define _monty_h_
 
+#include <ctype.h>
 #include <string.h>
 #include <stdlib.h>
 #include <stddef.h>
@@ -40,15 +41,12 @@ typedef struct instruction_s
 } instruction_t;
 void error(int, unsigned int, char *);
 char *rm_nwl(char *str);
-void find_func(char **lptr, instruction_t *instruct, int *data);
-void instruction(unsigned int, FILE *file, ssize_t *);
-stack_t *head;
+int find_func(char **lptr, instruction_t *instruct, int *data);
+int instruction(unsigned int, FILE *file, ssize_t *, char **, stack_t **);
+int ex;
 void print_mstacklist(stack_t **h, unsigned int l);
-void mstack_len(stack_t **h, unsigned int l);
 void add_mstackint(stack_t **head, unsigned int n);
-void free_stackint(stack_t **head, unsigned int n);
-void delete_mstack_at_index(stack_t **head, unsigned int index);
-stack_t *get_mstack_at_index(stack_t *head, unsigned int index);
+void free_stackint(stack_t **head);
 void print_end_mstacklist(stack_t **h, unsigned int ln);
 void pop_end_mstacklist(stack_t **h, unsigned int ln);
 void swap_mstacklist(stack_t **h, unsigned int ln);
@@ -57,5 +55,5 @@ void nop_mstacklist(stack_t **h, unsigned int ln);
 void sub_mstacklist(stack_t **h, unsigned int ln);
 void mul_mstacklist(stack_t **h, unsigned int ln);
 void mod_mstacklist(stack_t **h, unsigned int ln);
-
+void div_mstacklist(stack_t **h, unsigned int ln);
 #endif
