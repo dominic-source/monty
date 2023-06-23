@@ -43,8 +43,8 @@ int main(int argc, char *argv[])
 			exit(EXIT_FAILURE);
 		}
 		free(opcode);
+		opcode = NULL;
 	}
-	free(opcode);
 	free_stackint(&head);
 	fclose(file);
 	return (0);
@@ -62,7 +62,6 @@ int main(int argc, char *argv[])
 int instruction(unsigned int ln, FILE *fl, ssize_t *l, char **opc, stack_t **h)
 {
 	char *lptr = NULL;
-	stack_t *current;
 	instruction_t instruct;
 	size_t n = 0;
 	int data = 0;
@@ -95,15 +94,21 @@ int instruction(unsigned int ln, FILE *fl, ssize_t *l, char **opc, stack_t **h)
 		}
 		instruct.f(h, ln);
 		if (strcmp(instruct.opcode, "push") == 0)
-		{
-			current = *h;
-			current->n = data;
-		}
+			(*h)->n = data;
 	}
 	free(lptr);
 	return (ex);
 }
 
+#define MC\
+	do {\
+	if (token != NULL)\
+	{\
+		token = rm_nwl(token);\
+		token = strtok(token, " ");\
+	} \
+} \
+while (0)
 /**
  * find_func - handle push
  * @lptr: command
@@ -125,9 +130,10 @@ int find_func(char **lptr, instruction_t *instruct, int *data)
 		{"mod", mod_mstacklist},
 		{NULL, NULL},
 	};
-	rm_nwl(*lptr);
 	instruct->opcode = strtok(*lptr, " ");
 	token = strtok(NULL, " ");
+	instruct->opcode = rm_nwl(instruct->opcode);
+	MC;
 	if (token != NULL && strcmp(instruct->opcode, "push") == 0)
 	{
 		for (i = 0; token[i] != '\0' && token[i] != '\n'; i++)
@@ -140,7 +146,7 @@ int find_func(char **lptr, instruction_t *instruct, int *data)
 			}
 		*data = atoi(token);
 	}
-	else if ((token == NULL && strcmp(instruct->opcode, "push") == 0))
+	else if (token == NULL && strcmp(instruct->opcode, "push") == 0)
 		return (5);
 	for (i = 0; arr[i].opcode != NULL; i++)
 		if (strcmp(arr[i].opcode, instruct->opcode) == 0)
@@ -172,7 +178,8 @@ char *rm_nwl(char *str)
 	{
 		if (str[i] == '\n')
 		{
-			str[i] = '\0';
+			str[i] = ' ';
+
 		}
 	}
 	return (str);
