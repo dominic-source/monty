@@ -58,4 +58,6 @@ void mod_mstacklist(stack_t **h, unsigned int ln);
 void div_mstacklist(stack_t **h, unsigned int ln);
 void pchar_mstacklist(stack_t **h, unsigned int ln);
 void rotl_mstacklist(stack_t **h, unsigned int ln);
+void pstr_mstacklist(stack_t **h, unsigned int ln);
+void rotr_mstacklist(stack_t **h, unsigned int ln);
 #endif

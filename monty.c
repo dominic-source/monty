@@ -112,7 +112,8 @@ int instruction(unsigned int ln, FILE *fl, ssize_t *l, char **opc, stack_t **h)
 			{"nop", nop_mstacklist}, {"sub", sub_mstacklist},\
 			{"div", div_mstacklist}, {"mul", mul_mstacklist},\
 			{"mod", mod_mstacklist}, {"pchar", pchar_mstacklist},\
-			{NULL, NULL},\
+			{"pstr", pstr_mstacklist}, {"rotr", rotr_mstacklist},\
+			{NULL, NULL},	\
 		} \
 
 /**
