@@ -26,7 +26,7 @@ void error(int n, unsigned int line, char *amsg)
 		fprintf(stderr, "L%i: usage: push integer\n", line);
 		break;
 	case 6:
-		fprintf(stderr, "L%i: can't pint, stack empty\n", line);
+		fprintf(stderr, "L%i: can't %s, stack empty\n", line, amsg);
 		break;
 	case 7:
 		fprintf(stderr, "L%i: can't pop an empty stack\n", line);
@@ -36,6 +36,9 @@ void error(int n, unsigned int line, char *amsg)
 		break;
 	case 9:
 		fprintf(stderr, "L%i: division by zero\n", line);
+		break;
+	case 10:
+		fprintf(stderr, "L%i: can't pchar, value out of range\n", line);
 		break;
 	default:
 		return;
