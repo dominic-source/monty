@@ -37,6 +37,8 @@ void rotr_mstacklist(stack_t **h, unsigned int ln)
 {
 	stack_t *buf = *h;
 
+	if (buf == NULL || buf->next == NULL)
+		return;
 	ln = ln;
 	while (buf->next != NULL)
 		buf = buf->next;
