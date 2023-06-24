@@ -11,15 +11,16 @@ void pchar_mstacklist(stack_t **h, unsigned int ln)
 {
 	int pchar;
 
-	If (*h == NULL)
+	if (*h == NULL)
 	{
-		error(6, ln, "pchar");
+		ex = 6;
 		return;
 	}
+	ln = ln;
 	pchar = (*h)->n;
 	if (pchar < 0 || pchar > 127)
 	{
-		error(10, ln);
+		ex = 10;
 		return;
 	}
 	printf("%c\n", pchar);
@@ -34,7 +35,7 @@ void pchar_mstacklist(stack_t **h, unsigned int ln)
 
 void rotl_mstacklist(stack_t **h, unsigned int ln)
 {
-	stack_t buffer;
+	stack_t *buffer;
 
 	if (*h == NULL || (*h)->next == NULL)
 	{

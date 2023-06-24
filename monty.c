@@ -103,6 +103,18 @@ int instruction(unsigned int ln, FILE *fl, ssize_t *l, char **opc, stack_t **h)
 	return (ex);
 }
 
+#define IARRAY\
+		{\
+			{"push", add_mstackint}, {"pall", print_mstacklist},\
+			{"pint", print_end_mstacklist},\
+			{"pop", pop_end_mstacklist}, {"rotl", rotl_mstacklist},\
+			{"swap", swap_mstacklist}, {"add", add_mstacklist},\
+			{"nop", nop_mstacklist}, {"sub", sub_mstacklist},\
+			{"div", div_mstacklist}, {"mul", mul_mstacklist},\
+			{"mod", mod_mstacklist}, {"pchar", pchar_mstacklist},\
+			{NULL, NULL},\
+		} \
+
 /**
  * find_func - handle push
  * @lptr: command
@@ -114,15 +126,8 @@ int find_func(char **lptr, instruction_t *instruct, int *data)
 {
 	char *token = NULL;
 	int flag = 0, i;
+	instruction_t arr[] = IARRAY;
 
-	instruction_t arr[] = {
-		{"push", add_mstackint}, {"pall", print_mstacklist},
-		{"pint", print_end_mstacklist}, {"pop", pop_end_mstacklist},
-		{"swap", swap_mstacklist}, {"add", add_mstacklist},
-		{"nop", nop_mstacklist}, {"sub", sub_mstacklist},
-		{"div", div_mstacklist}, {"mul", mul_mstacklist},
-		{"mod", mod_mstacklist}, {NULL, NULL},
-	};
 	*lptr = rm_nwl(*lptr);
 	instruct->opcode = strtok(*lptr, " ");
 	if (instruct->opcode == NULL)
