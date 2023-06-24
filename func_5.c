@@ -35,7 +35,14 @@ void pstr_mstacklist(stack_t **h, unsigned int ln)
  */
 void rotr_mstacklist(stack_t **h, unsigned int ln)
 {
-	h = h;
-	ln = ln;
+	stack_t *buf = *h;
 
+	ln = ln;
+	while (buf->next != NULL)
+		buf = buf->next;
+	buf->prev->next = NULL;
+	buf->next = *h;
+	buf->prev = NULL;
+	(*h)->prev = buf;
+	*h = buf;
 }
