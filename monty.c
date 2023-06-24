@@ -132,7 +132,7 @@ int find_func(char **lptr, instruction_t *instruct, int *data)
 	instruct->opcode = strtok(*lptr, " ");
 	if (instruct->opcode == NULL)
 		return (-1);
-	else if (strcmp(instruct->opcode, "#") == 0)
+	else if (strncmp(instruct->opcode, "#", 1) == 0)
 		return (-1);
 	token = strtok(NULL, " ");
 	if (token != NULL && strcmp(instruct->opcode, "push") == 0)
