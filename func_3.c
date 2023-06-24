@@ -36,20 +36,24 @@ void pchar_mstacklist(stack_t **h, unsigned int ln)
 void rotl_mstacklist(stack_t **h, unsigned int ln)
 {
 	stack_t *buffer;
+	stack_t *current;
 
 	if (*h == NULL || (*h)->next == NULL)
 	{
 		return;
 	}
 	buffer = *h;
+	current = *h;
 	ln = ln;
+
 	while (buffer->next != NULL)
 	{
 		buffer = buffer->next;
 	}
+	buffer->prev = NULL;
 	buffer->next = *h;
-	(*h)->next = NULL;
-	(*h)->prev = buffer;
+
 	*h = (*h)->next;
-	(*h)->prev = NULL;
+	current->next = NULL;
+	current->prev = buffer;
 }
