@@ -19,7 +19,7 @@ void pstr_mstacklist(stack_t **h, unsigned int ln)
 			printf("%c", ((char)current->n));
 		else if (current->n == 0)
 			break;
-		else
+		else if (!(current->n > 32 && current->n < 128))
 			break;
 		current = current->next;
 	}
