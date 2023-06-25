@@ -1,6 +1,5 @@
 #include "monty.h"
 
-
 /**
  * pstr_mstacklist - print the string starting at the top of the stack
  *
