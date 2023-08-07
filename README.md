@@ -26,7 +26,9 @@ The goal of this project is to create an interpreter for Monty ByteCodes files
 **Task 5** - Implement the nop opcode
 
 # Guide
+
 **Operators Instruction**
+
 op_push - pushes the value of the push argument to the stack
 :sunglasses: **usage**: push 123
 
